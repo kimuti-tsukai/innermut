@@ -28,7 +28,7 @@ pub trait InnerMut: Inner {
         Self: 'a,
         Self::Inner: 'a;
 
-    fn inner_mut(&mut self) -> Result<Self::GuardMut<'_>, <Self as InnerMut>::Error<'_>>;
+    fn inner_mut(&self) -> Result<Self::GuardMut<'_>, <Self as InnerMut>::Error<'_>>;
 }
 
 impl<T> Inner for RefCell<T> {
@@ -61,7 +61,7 @@ impl<T> InnerMut for RefCell<T> {
         Self: 'a,
         Self::Inner: 'a;
 
-    fn inner_mut(&mut self) -> Result<Self::GuardMut<'_>, <Self as InnerMut>::Error<'_>> {
+    fn inner_mut(&self) -> Result<Self::GuardMut<'_>, <Self as InnerMut>::Error<'_>> {
         self.try_borrow_mut()
     }
 }
@@ -96,7 +96,7 @@ impl<T> InnerMut for Mutex<T> {
         Self: 'a,
         Self::Inner: 'a;
 
-    fn inner_mut(&mut self) -> Result<Self::GuardMut<'_>, <Self as InnerMut>::Error<'_>> {
+    fn inner_mut(&self) -> Result<Self::GuardMut<'_>, <Self as InnerMut>::Error<'_>> {
         self.try_lock()
     }
 }
@@ -131,7 +131,7 @@ impl<T> InnerMut for RwLock<T> {
         Self: 'a,
         Self::Inner: 'a;
 
-    fn inner_mut(&mut self) -> Result<Self::GuardMut<'_>, <Self as InnerMut>::Error<'_>> {
+    fn inner_mut(&self) -> Result<Self::GuardMut<'_>, <Self as InnerMut>::Error<'_>> {
         self.try_write()
     }
 }
